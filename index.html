@@ -11,7 +11,7 @@
 			background: #ddd;
 		}
 
-		#box {
+		#hero {
 			position: absolute;
 			width: 104vw;
 			top: -60vw;
@@ -20,7 +20,9 @@
 
 			background: #339;
 			transition: 0.1s;
-			border-radius: 51vw;
+			border: 0;
+			border-bottom-left-radius: 51vw;
+			border-bottom-right-radius: 51vw;
 			z-index: -1;
 		}
 
@@ -29,6 +31,11 @@
 			color: white;
 			text-align: center;
 		}
+		h2 {
+			text-align: center;
+			color: white;
+			font-size: 32px;
+		}
 
 		.content {
 			height: 5000px;
@@ -36,25 +43,32 @@
 	</style>
 </head>
 <body>
+	<div id="hero"></div>
 	<h1>Animation Test</h1>
+	<h2>This title shouldn't clip behind the hero.</h2>
 	<div class="content">
 
 	</div>
-
-	<div id="box"></div>
 </body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+		crossorigin="anonymous"></script>
 <script>
-	window.onscroll = function() {
-		const box = document.getElementById('box');
-		const index = window.pageYOffset;
-		const radius = viewportWidthToPixel(0.51, false);
-		const dif = radius - (index * 1.8);
-		if (dif < 0) dif = 0.0;
-		box.setAttribute("style", `border-radius: ${dif}px`);
-	};
+	jQuery(function ($) {
+		const hero = $('#hero');
+		const initialRadius = parseInt(hero.css('border-bottom-left-radius'), 10);
 
-	function viewportWidthToPixel(percent) {
-		return window.outerWidth * percent;
-	}
+		$(window).scroll(updateHero);
+		function updateHero() {
+			const index = $(window).scrollTop();
+			if (index > 600) return;
+
+			let dif = initialRadius - (index * 1.5);
+			dif = dif < 0 ? 0 : dif;
+			hero.css('border-bottom-left-radius', (dif) + 'px');
+			hero.css('border-bottom-right-radius', (dif) + 'px');
+		};
+		updateHero();
+	});
 </script>
 </html>
