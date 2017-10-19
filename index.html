@@ -63,10 +63,9 @@
 			const index = $(window).scrollTop();
 			if (index > 600) return;
 
-			let dif = initialRadius - (index * 1.5);
-			dif = dif < 0 ? 0 : dif;
-			hero.css('border-bottom-left-radius', (dif) + 'px');
-			hero.css('border-bottom-right-radius', (dif) + 'px');
+			const dif = Math.max(0, initialRadius - (index * 1.5));
+			hero.css('border-bottom-left-radius', dif + 'px');
+			hero.css('border-bottom-right-radius', dif + 'px');
 		};
 		updateHero();
 	});
